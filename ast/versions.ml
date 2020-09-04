@@ -399,8 +399,8 @@ end
 
 (*$ foreach_version (fun n version ->
     printf "module OCaml_%d = struct\n" n;
-    printf "  module Ast = Migrate_parsetree.Ast_%d\n" n;
-    printf "  include Make_witness(Migrate_parsetree.Ast_%d)\n" n;
+    printf "  module Ast = Ppxlib_astlib.Ast_%d\n" n;
+    printf "  include Make_witness(Ppxlib_astlib.Ast_%d)\n" n;
     printf "  let version = %d\n" n;
     printf "  let string_version = %S\n" version;
     printf "end\n";
@@ -409,71 +409,71 @@ end
   )
 *)
 module OCaml_402 = struct
-  module Ast = Migrate_parsetree.Ast_402
-  include Make_witness(Migrate_parsetree.Ast_402)
+  module Ast = Ppxlib_astlib.Ast_402
+  include Make_witness(Ppxlib_astlib.Ast_402)
   let version = 402
   let string_version = "4.02"
 end
 let ocaml_402 : OCaml_402.types ocaml_version = (module OCaml_402)
 module OCaml_403 = struct
-  module Ast = Migrate_parsetree.Ast_403
-  include Make_witness(Migrate_parsetree.Ast_403)
+  module Ast = Ppxlib_astlib.Ast_403
+  include Make_witness(Ppxlib_astlib.Ast_403)
   let version = 403
   let string_version = "4.03"
 end
 let ocaml_403 : OCaml_403.types ocaml_version = (module OCaml_403)
 module OCaml_404 = struct
-  module Ast = Migrate_parsetree.Ast_404
-  include Make_witness(Migrate_parsetree.Ast_404)
+  module Ast = Ppxlib_astlib.Ast_404
+  include Make_witness(Ppxlib_astlib.Ast_404)
   let version = 404
   let string_version = "4.04"
 end
 let ocaml_404 : OCaml_404.types ocaml_version = (module OCaml_404)
 module OCaml_405 = struct
-  module Ast = Migrate_parsetree.Ast_405
-  include Make_witness(Migrate_parsetree.Ast_405)
+  module Ast = Ppxlib_astlib.Ast_405
+  include Make_witness(Ppxlib_astlib.Ast_405)
   let version = 405
   let string_version = "4.05"
 end
 let ocaml_405 : OCaml_405.types ocaml_version = (module OCaml_405)
 module OCaml_406 = struct
-  module Ast = Migrate_parsetree.Ast_406
-  include Make_witness(Migrate_parsetree.Ast_406)
+  module Ast = Ppxlib_astlib.Ast_406
+  include Make_witness(Ppxlib_astlib.Ast_406)
   let version = 406
   let string_version = "4.06"
 end
 let ocaml_406 : OCaml_406.types ocaml_version = (module OCaml_406)
 module OCaml_407 = struct
-  module Ast = Migrate_parsetree.Ast_407
-  include Make_witness(Migrate_parsetree.Ast_407)
+  module Ast = Ppxlib_astlib.Ast_407
+  include Make_witness(Ppxlib_astlib.Ast_407)
   let version = 407
   let string_version = "4.07"
 end
 let ocaml_407 : OCaml_407.types ocaml_version = (module OCaml_407)
 module OCaml_408 = struct
-  module Ast = Migrate_parsetree.Ast_408
-  include Make_witness(Migrate_parsetree.Ast_408)
+  module Ast = Ppxlib_astlib.Ast_408
+  include Make_witness(Ppxlib_astlib.Ast_408)
   let version = 408
   let string_version = "4.08"
 end
 let ocaml_408 : OCaml_408.types ocaml_version = (module OCaml_408)
 module OCaml_409 = struct
-  module Ast = Migrate_parsetree.Ast_409
-  include Make_witness(Migrate_parsetree.Ast_409)
+  module Ast = Ppxlib_astlib.Ast_409
+  include Make_witness(Ppxlib_astlib.Ast_409)
   let version = 409
   let string_version = "4.09"
 end
 let ocaml_409 : OCaml_409.types ocaml_version = (module OCaml_409)
 module OCaml_410 = struct
-  module Ast = Migrate_parsetree.Ast_410
-  include Make_witness(Migrate_parsetree.Ast_410)
+  module Ast = Ppxlib_astlib.Ast_410
+  include Make_witness(Ppxlib_astlib.Ast_410)
   let version = 410
   let string_version = "4.10"
 end
 let ocaml_410 : OCaml_410.types ocaml_version = (module OCaml_410)
 module OCaml_411 = struct
-  module Ast = Migrate_parsetree.Ast_411
-  include Make_witness(Migrate_parsetree.Ast_411)
+  module Ast = Ppxlib_astlib.Ast_411
+  include Make_witness(Ppxlib_astlib.Ast_411)
   let version = 411
   let string_version = "4.11"
 end
@@ -482,27 +482,27 @@ let ocaml_411 : OCaml_411.types ocaml_version = (module OCaml_411)
 
 (*$foreach_version_pair (fun a b ->
     printf "include Register_migration(OCaml_%d)(OCaml_%d)\n" a b;
-    printf "    (Migrate_parsetree.Migrate_%d_%d)(Migrate_parsetree.Migrate_%d_%d)\n" a b b a
+    printf "    (Ppxlib_astlib.Migrate_%d_%d)(Ppxlib_astlib.Migrate_%d_%d)\n" a b b a
   )
 *)
 include Register_migration(OCaml_402)(OCaml_403)
-    (Migrate_parsetree.Migrate_402_403)(Migrate_parsetree.Migrate_403_402)
+    (Ppxlib_astlib.Migrate_402_403)(Ppxlib_astlib.Migrate_403_402)
 include Register_migration(OCaml_403)(OCaml_404)
-    (Migrate_parsetree.Migrate_403_404)(Migrate_parsetree.Migrate_404_403)
+    (Ppxlib_astlib.Migrate_403_404)(Ppxlib_astlib.Migrate_404_403)
 include Register_migration(OCaml_404)(OCaml_405)
-    (Migrate_parsetree.Migrate_404_405)(Migrate_parsetree.Migrate_405_404)
+    (Ppxlib_astlib.Migrate_404_405)(Ppxlib_astlib.Migrate_405_404)
 include Register_migration(OCaml_405)(OCaml_406)
-    (Migrate_parsetree.Migrate_405_406)(Migrate_parsetree.Migrate_406_405)
+    (Ppxlib_astlib.Migrate_405_406)(Ppxlib_astlib.Migrate_406_405)
 include Register_migration(OCaml_406)(OCaml_407)
-    (Migrate_parsetree.Migrate_406_407)(Migrate_parsetree.Migrate_407_406)
+    (Ppxlib_astlib.Migrate_406_407)(Ppxlib_astlib.Migrate_407_406)
 include Register_migration(OCaml_407)(OCaml_408)
-    (Migrate_parsetree.Migrate_407_408)(Migrate_parsetree.Migrate_408_407)
+    (Ppxlib_astlib.Migrate_407_408)(Ppxlib_astlib.Migrate_408_407)
 include Register_migration(OCaml_408)(OCaml_409)
-    (Migrate_parsetree.Migrate_408_409)(Migrate_parsetree.Migrate_409_408)
+    (Ppxlib_astlib.Migrate_408_409)(Ppxlib_astlib.Migrate_409_408)
 include Register_migration(OCaml_409)(OCaml_410)
-    (Migrate_parsetree.Migrate_409_410)(Migrate_parsetree.Migrate_410_409)
+    (Ppxlib_astlib.Migrate_409_410)(Ppxlib_astlib.Migrate_410_409)
 include Register_migration(OCaml_410)(OCaml_411)
-    (Migrate_parsetree.Migrate_410_411)(Migrate_parsetree.Migrate_411_410)
+    (Ppxlib_astlib.Migrate_410_411)(Ppxlib_astlib.Migrate_411_410)
 (*$*)
 
 module OCaml_current = OCaml_OCAML_VERSION

@@ -37,13 +37,13 @@ module Cookies = struct
   type t = T
 
   let get T name pattern =
-    Option.map (Ocaml_common.Ast_mapper.get_cookie name)
+    Option.map (Ppxlib_astlib.Ast_mapper.get_cookie name)
       ~f:(fun e ->
         let e = Selected_ast.of_ocaml Expression e in
         Ast_pattern.parse pattern e.pexp_loc e Fn.id)
 
   let set T name expr =
-    Ocaml_common.Ast_mapper.set_cookie name
+    Ppxlib_astlib.Ast_mapper.set_cookie name
       (Selected_ast.to_ocaml Expression expr)
 
   let handlers = ref []
@@ -492,7 +492,7 @@ let map_structure_gen st ~tool_name ~hook ~expect_mismatch_handler =
 
 let map_structure st =
   map_structure_gen st
-    ~tool_name:(Ocaml_common.Ast_mapper.tool_name ())
+    ~tool_name:(Ppxlib_astlib.Ast_mapper.tool_name ())
     ~hook:Context_free.Generated_code_hook.nop
     ~expect_mismatch_handler:Context_free.Expect_mismatch_handler.nop
 
@@ -536,7 +536,7 @@ let map_signature_gen sg ~tool_name ~hook ~expect_mismatch_handler =
 
 let map_signature sg =
   map_signature_gen sg
-    ~tool_name:(Ocaml_common.Ast_mapper.tool_name ())
+    ~tool_name:(Ppxlib_astlib.Ast_mapper.tool_name ())
     ~hook:Context_free.Generated_code_hook.nop
     ~expect_mismatch_handler:Context_free.Expect_mismatch_handler.nop
 
@@ -549,19 +549,19 @@ let map_signature sg =
 let mapper =
   let module Js = Ppxlib_ast.Selected_ast in
   (*$*)
-  let structure _ st =
+  let structure st =
     Js.of_ocaml Structure st
     |> map_structure
     |> Js.to_ocaml Structure
   in
   (*$ str_to_sig _last_text_block *)
-  let signature _ sg =
+  let signature sg =
     Js.of_ocaml Signature sg
     |> map_signature
     |> Js.to_ocaml Signature
   in
   (*$*)
-  { Ocaml_common.Ast_mapper.default_mapper with structure; signature }
+  Ppxlib_astlib.Ast_mapper.hft_mapper structure signature
 ;;
 
 let as_ppx_rewriter_main argv =
@@ -580,7 +580,7 @@ let as_ppx_rewriter_main argv =
 
 let run_as_ppx_rewriter () =
   perform_checks := false;
-  Ocaml_common.Ast_mapper.run_main as_ppx_rewriter_main;
+  Ppxlib_astlib.Ast_mapper.run_main as_ppx_rewriter_main;
   Caml.exit 0
 
 let string_contains_binary_ast s =
@@ -656,8 +656,7 @@ end
 
 (* Set the input name globally. This is used by some ppx rewriters
    such as bisect_ppx. *)
-let set_input_name name =
-  Ocaml_common.Location.input_name := name
+let set_input_name = Ppxlib_astlib.Location.set_input_name
 
 let load_input (kind : Kind.t) fn input_name ~relocate ic =
   set_input_name input_name;
@@ -729,13 +728,13 @@ let extract_cookies_str st =
     :: st ->
     let prefix = Ppxlib_ast.Selected_ast.to_ocaml Structure [prefix] in
     assert (List.is_empty
-              (Ocaml_common.Ast_mapper.drop_ppx_context_str ~restore:true prefix));
+              (Ppxlib_astlib.Ast_mapper.drop_ppx_context_str ~restore:true prefix));
     st
   | _ -> st
 
 let add_cookies_str st =
   let prefix =
-    Ocaml_common.Ast_mapper.add_ppx_context_str ~tool_name:"ppxlib_driver" []
+    Ppxlib_astlib.Ast_mapper.add_ppx_context_str ~tool_name:"ppxlib_driver" []
     |> Ppxlib_ast.Selected_ast.of_ocaml Structure
   in
   prefix @ st
@@ -747,13 +746,13 @@ let extract_cookies_sig sg =
     :: sg ->
     let prefix = Ppxlib_ast.Selected_ast.to_ocaml Signature [prefix] in
     assert (List.is_empty
-              (Ocaml_common.Ast_mapper.drop_ppx_context_sig ~restore:true prefix));
+              (Ppxlib_astlib.Ast_mapper.drop_ppx_context_sig ~restore:true prefix));
     sg
   | _ -> sg
 
 let add_cookies_sig sg =
   let prefix =
-    Ocaml_common.Ast_mapper.add_ppx_context_sig ~tool_name:"ppxlib_driver" []
+    Ppxlib_astlib.Ast_mapper.add_ppx_context_sig ~tool_name:"ppxlib_driver" []
     |> Ppxlib_ast.Selected_ast.of_ocaml Signature
   in
   prefix @ sg
@@ -1232,12 +1231,12 @@ let standalone_run_as_ppx_rewriter () =
   | exception Arg.Help msg -> Printf.eprintf "%s" msg; Caml.exit 0
   | () ->
     interpret_mask ();
-    Ocaml_common.Ast_mapper.apply
+    Ppxlib_astlib.Ast_mapper.apply
       ~source:Caml.Sys.argv.(n - 2) ~target:Caml.Sys.argv.(n - 1) mapper
 ;;
 
 let standalone () =
-  Compiler_specifics.read_clflags_from_env ();
+  Ppxlib_astlib.Compiler_specifics.read_clflags_from_env ();
   try
     if Array.length Caml.Sys.argv >= 2 &&
        match Caml.Sys.argv.(1) with

@@ -15,12 +15,13 @@
 
 (* TODO: remove this open *)
 open Stdlib0
-open Ocaml_common
 
-module Location = Location
-module Longident = Longident
+module Location = Ppxlib_astlib.Location
+module Longident = Ppxlib_astlib.Longident
+module Misc = Ppxlib_astlib.Misc
+module Syntaxerr = Ppxlib_astlib.Syntaxerr
 
-open Migrate_parsetree.Ast_410
+open Ppxlib_astlib.Ast_410
 
 [@@@warning "-9"]
 open Asttypes
@@ -37,7 +38,7 @@ type attrs = attribute list
 let default_loc = ref Location.none
 
 let with_default_loc l f =
-  Misc.protect_refs [Misc.R (default_loc, l)] f
+  Misc.protect_refs [Misc.mk_ref_and_value default_loc l] f
 
 module Const = struct
   let integer ?suffix i = Pconst_integer (i, suffix)
@@ -87,7 +88,7 @@ module Typ = struct
   let varify_constructors var_names t =
     let check_variable vl loc v =
       if List.mem v vl then
-        raise Syntaxerr.(Error(Variable_in_scope(loc,v))) in
+        raise (Syntaxerr.(Error (variable_in_scope_error loc v))) in
     let var_names = List.map (fun v -> v.txt) var_names in
     let rec loop t =
       let desc =

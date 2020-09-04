@@ -39,7 +39,7 @@ module Ast_io = struct
     (* The input contains a binary AST for an unknown version of
        OCaml.  The argument is the unknown magic number. *)
 
-  let magic_length = String.length Ocaml_common.Config.ast_impl_magic_number
+  let magic_length = String.length Ppxlib_astlib.Config.ast_impl_magic_number
 
   let read_magic ic =
     let buf = Bytes.create magic_length in
@@ -54,19 +54,19 @@ module Ast_io = struct
     match read_magic ic with
     | Error s -> Error (Not_a_binary_ast s)
     | Ok s ->
-      if String.equal s Ocaml_common.Config.ast_impl_magic_number then
+      if String.equal s Ppxlib_astlib.Config.ast_impl_magic_number then
         let filename : string = input_value ic in
         let payload = Impl (input_value ic) in
         Ok (filename, payload)
-      else if String.equal s Ocaml_common.Config.ast_intf_magic_number then
+      else if String.equal s Ppxlib_astlib.Config.ast_intf_magic_number then
         let filename : string = input_value ic in
         let payload = Intf (input_value ic) in
         Ok (filename, payload)
       else
       if String.equal s
-           (String.sub Ocaml_common.Config.ast_impl_magic_number ~pos:0 ~len:9)
+           (String.sub Ppxlib_astlib.Config.ast_impl_magic_number ~pos:0 ~len:9)
       || String.equal s
-           (String.sub Ocaml_common.Config.ast_intf_magic_number ~pos:0 ~len:9)
+           (String.sub Ppxlib_astlib.Config.ast_intf_magic_number ~pos:0 ~len:9)
       then
         Error (Unknown_version s)
       else
@@ -75,11 +75,11 @@ module Ast_io = struct
   let write oc (filename : string) x =
     match x with
     | Intf x ->
-      output_string oc Ocaml_common.Config.ast_intf_magic_number;
+      output_string oc Ppxlib_astlib.Config.ast_intf_magic_number;
       output_value oc filename;
       output_value oc x
     | Impl x ->
-      output_string oc Ocaml_common.Config.ast_impl_magic_number;
+      output_string oc Ppxlib_astlib.Config.ast_impl_magic_number;
       output_value oc filename;
       output_value oc x
 end
@@ -116,7 +116,7 @@ module Intf_or_impl = struct
       let sg = Selected_ast.To_ocaml.copy_signature sg in
       let sg =
         if add_ppx_context then
-          Ocaml_common.Ast_mapper.add_ppx_context_sig ~tool_name:"ppx_driver" sg
+          Ppxlib_astlib.Ast_mapper.add_ppx_context_sig ~tool_name:"ppx_driver" sg
         else
           sg
       in
@@ -125,7 +125,7 @@ module Intf_or_impl = struct
       let st = Selected_ast.To_ocaml.copy_structure st in
       let st =
         if add_ppx_context then
-          Ocaml_common.Ast_mapper.add_ppx_context_str ~tool_name:"ppx_driver" st
+          Ppxlib_astlib.Ast_mapper.add_ppx_context_str ~tool_name:"ppx_driver" st
         else
           st
       in

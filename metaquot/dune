@@ -6,4 +6,6 @@
  (libraries
   ppxlib
   ppxlib_traverse_builtins
-  ppxlib_metaquot_lifters))
+  ppxlib_metaquot_lifters
+  ppxlib_astlib
+  ppxlib_ast))

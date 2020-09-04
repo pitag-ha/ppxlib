@@ -1,0 +1,31 @@
+(library
+ (name ppxlib_astlib)
+ (public_name ppxlib.astlib)
+ (libraries ocaml-compiler-libs.common compiler-libs.common)
+ (preprocess
+  (action
+   (run %{exe:pp/pp.exe} %{read:ast-version} %{input-file}))))
+
+(rule
+ (targets ast-version)
+ (action
+  (run %{ocaml} %{dep:config/gen.ml} %{ocaml_version})))
+
+(cinaps
+ (files *.ml *.mli)
+ (libraries astlib_cinaps_helpers))
+
+;; This is to make the code compatible with different versions of
+;; OCaml
+
+(rule
+ (targets location_helper.ml clflags_helper.ml misc_helper.ml)
+ (deps gen-compiler_specifics_ast)
+ (action
+  (run %{ocaml} %{deps} %{ocaml_version} %{targets})))
+
+(rule
+ (targets compiler_specifics.ml)
+ (deps gen-compiler_specifics_src)
+ (action
+  (run %{ocaml} %{deps} %{ocaml_version} %{targets})))

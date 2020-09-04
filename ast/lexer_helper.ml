@@ -1,7 +1,7 @@
-open Ocaml_common.Parser
+open Ppxlib_astlib.Parser
 
 let keyword_table =
-  Ocaml_common.Misc.create_hashtable 149 [
+  Ppxlib_astlib.Misc.create_hashtable 149 [
     "and", AND;
     "as", AS;
     "assert", ASSERT;

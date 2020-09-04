@@ -1,5 +1,6 @@
 include Ppxlib_ast
 include Ast
+open Ppxlib_astlib
 open Ast_helper
 
 let loc =
