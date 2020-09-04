@@ -15,8 +15,10 @@
 
 (** Copy of Ast_helper from OCaml 4.10 with docstring related stuff removed *)
 
-open Ocaml_common
-open Migrate_parsetree.Ast_410
+open Ppxlib_astlib.Ast_410
+
+module Location = Ppxlib_astlib.Location
+module Longident = Ppxlib_astlib.Longident
 
 open Asttypes
 open Parsetree

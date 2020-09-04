@@ -15,12 +15,13 @@
 
 (* TODO: remove this open *)
 open Stdlib0
-open Ocaml_common
 
-module Location = Location
-module Longident = Longident
+module Location = Ppxlib_astlib.Location
+module Longident = Ppxlib_astlib.Longident
+module Misc = Ppxlib_astlib.Misc
+module Syntaxerr = Ppxlib_astlib.Syntaxerr
 
-open Migrate_parsetree.Ast_410
+open Ppxlib_astlib.Ast_410
 
 [@@@warning "-9"]
 open Asttypes

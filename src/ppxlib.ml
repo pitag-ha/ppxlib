@@ -7,18 +7,18 @@ include struct
   open Ocaml_shadow
 
   include (Ocaml_shadow : module type of struct include Ocaml_shadow end
-           with module Ast_helper   := Ast_helper
-           with module Asttypes     := Asttypes
-           with module Docstrings   := Docstrings
-           with module Identifiable := Identifiable
-           with module Lexer        := Lexer
-           with module Location     := Location
-           with module Longident    := Longident
-           with module Parse        := Parse
-           with module Parser       := Parser
-           with module Parsetree    := Parsetree
-           with module Pprintast    := Pprintast
-           with module Syntaxerr    := Syntaxerr
+            with module Ast_helper   := Ast_helper
+            with module Asttypes     := Asttypes
+            with module Docstrings   := Docstrings
+            with module Identifiable := Identifiable
+            with module Lexer        := Lexer
+            with module Location     := Location
+            with module Longident    := Longident
+            with module Parse        := Parse
+            with module Parser       := Parser
+            with module Parsetree    := Parsetree
+            with module Pprintast    := Pprintast
+            with module Syntaxerr    := Syntaxerr
           )
 end (** @inline *)
 

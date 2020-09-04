@@ -11,7 +11,7 @@ let () =
     pr "let get_load_path () = !Ocaml_common.Config.load_path";
     pr "let read_clflags_from_env () = ()"
   ) else (
-    pr "let get_load_path () = Ocaml_common.Load_path.get_paths ()";
-    pr "let read_clflags_from_env () = Ocaml_common.Compmisc.read_clflags_from_env ()"
+    pr "let get_load_path () = Load_path.get_paths ()";
+    pr "let read_clflags_from_env () = Compmisc.read_clflags_from_env ()"
   );
   close_out oc

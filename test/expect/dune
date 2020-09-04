@@ -3,7 +3,7 @@
  (link_flags (-linkall))
  (modes byte)
  (libraries unix compiler-libs.toplevel ppxlib ppxlib.metaquot ppxlib.traverse
-            findlib.top
+            findlib.top ppxlib_ast
             ;; We don't actually use findlib.dynload, however it is a
             ;; special library that causes to record the various
             ;; libraries statically linked in with findlib so that

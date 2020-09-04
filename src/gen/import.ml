@@ -1,4 +1,5 @@
 include Ppxlib_ast
+include Ppxlib_astlib
 include Ast
 open Ast_helper
 

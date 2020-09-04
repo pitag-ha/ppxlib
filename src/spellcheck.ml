@@ -11,7 +11,7 @@ let spellcheck names name =
   let _, suggestions =
     List.fold_left names ~init:(Int.max_int, [])
       ~f:(fun ((best_distance, names_at_best_distance) as acc) registered_name ->
-        match Ocaml_common.Misc.edit_distance name registered_name cutoff with
+        match Ppxlib_astlib.Misc.edit_distance name registered_name cutoff with
         | None -> acc
         | Some dist ->
           if dist < best_distance then

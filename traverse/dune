@@ -3,5 +3,5 @@
  (public_name ppxlib.traverse)
  (kind ppx_rewriter)
  (flags (:standard -safe-string))
- (libraries  ppxlib)
+ (libraries ppxlib ppxlib_ast ppxlib_traverse_builtins stdppx)
  (preprocess (pps ppxlib_metaquot ppxlib.runner)))

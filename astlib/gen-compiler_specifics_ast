@@ -19,12 +19,12 @@ let deprecated loc s =
     if ver < (4, 08) then begin
       pr {|
 let print_error ppf loc = Ocaml_common.Location.print_error ppf loc
-let error_of_printer ~loc x y = Ocaml_common.Location.error_of_printer loc x y
+let error_of_printer ~loc x y = Location.error_of_printer loc x y
 |};
     end else begin
       pr {|
-let print_error ppf loc = Format.fprintf ppf "%%aError:" Ocaml_common.Location.print_loc loc
-let error_of_printer ~loc x y = Ocaml_common.Location.error_of_printer ~loc x y
+let print_error ppf loc = Format.fprintf ppf "%%aError:" Location.print_loc loc
+let error_of_printer ~loc x y = Location.error_of_printer ~loc x y
 |};
     end);
   with_file Sys.argv.(3) ~f:(fun pr -> (* clflags_helper *)
@@ -34,13 +34,13 @@ let is_unsafe () = !Ocaml_common.Clflags.fast[@ocaml.warning "-3"]
 |};
     end else begin
       pr {|
-let is_unsafe () = !Ocaml_common.Clflags.unsafe[@ocaml.warning "-3"]
+let is_unsafe () = !Clflags.unsafe[@ocaml.warning "-3"]
 |};
     end);
   with_file Sys.argv.(4) ~f:(fun pr -> (* misc_helper *)
     if ver < (4, 10) then begin
       pr {|
-let may = Import.Misc.may
+let may = Ocaml_common.Misc.may
 |};
     end else begin
       pr {|

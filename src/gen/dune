@@ -3,7 +3,7 @@
  (flags (:standard -safe-string))
  (libraries
   ppxlib_ast
-  compiler-libs.common
+  ppxlib_astlib
   compiler-libs.bytecomp
   ppxlib_traverse_builtins
   stdppx))
